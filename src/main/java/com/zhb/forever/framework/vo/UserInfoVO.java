@@ -8,6 +8,7 @@ public class UserInfoVO {
     private String userName;
     private String realName;
     private String sex;
+    private Calendar birthday;
     private String identityCard;
     private String country;
     private String nation;
@@ -42,6 +43,12 @@ public class UserInfoVO {
     }
     public void setSex(String sex) {
         this.sex = sex;
+    }
+    public Calendar getBirthday() {
+        return birthday;
+    }
+    public void setBirthday(Calendar birthday) {
+        this.birthday = birthday;
     }
     public String getIdentityCard() {
         return identityCard;
