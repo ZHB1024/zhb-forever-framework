@@ -716,5 +716,13 @@ public class StringUtil {
     public static String arrayToCommaDelimitedString(Object[] arr) {
         return arrayToDelimitedString(arr, ",");
     }
+    
+    public static void println(String result) {
+        System.out.println(result);
+    }
+    
+    public static void print(String result) {
+        System.out.print(result);
+    }
 
 }
