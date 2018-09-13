@@ -5,6 +5,11 @@ public class OrderVO {
     private String propertyName;//排序字段
     private boolean ascending;//asc:true;desc:false
     
+    public OrderVO(String propertyName,boolean ascending) {
+        this.propertyName = propertyName;
+        this.ascending = ascending;
+    }
+    
     public String getPropertyName() {
         return propertyName;
     }
