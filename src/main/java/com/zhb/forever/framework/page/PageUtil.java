@@ -13,6 +13,8 @@ import com.alibaba.fastjson.JSONObject;
 public class PageUtil {
     
     private static final Logger logger = LoggerFactory.getLogger(PageUtil.class);
+    
+    public static int PAGE_SIZE = 20;
 
     /**
      ** 获取Page对象
