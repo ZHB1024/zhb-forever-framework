@@ -30,7 +30,7 @@ public class EmailUtil {
             return "邮件内容必须填写！";
         }
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
-        sender.setHost("smtp.126.com");
+        sender.setHost(mailVo.getHost());
         sender.setUsername(mailVo.getUserName());// 发送方的邮箱，例如zhb2011150@126.com
         sender.setPassword(mailVo.getPassword());// 发送方邮箱的密码
         sender.setPort(25);
