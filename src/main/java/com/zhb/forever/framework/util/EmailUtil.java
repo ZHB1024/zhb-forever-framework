@@ -12,9 +12,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.zhb.forever.framework.vo.MailVO;
 
-public class MailUtil {
+public class EmailUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(MailUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(EmailUtil.class);
 
     public static String sendMail(MailVO mailVo) {
         if (null == mailVo) {
