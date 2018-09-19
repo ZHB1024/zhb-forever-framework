@@ -7,7 +7,7 @@ import com.zhb.forever.framework.vo.KeyValueVO;
 
 public enum DeleteFlagEnum {
     
-    UDEL("正常",0),DEL("已删除",1);
+    UDEL("正常",0),DEL("已删除",1),FINISH("已完成",2);
     
     private String name;
     private int index;
