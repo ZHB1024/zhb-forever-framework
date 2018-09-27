@@ -34,7 +34,7 @@ public class DateTimeUtil {
             return null;
         }
         if (StringUtil.isBlank(format)) {
-            format = " yyyy-MM-dd HH:mm:ss";
+            format = "yyyy-MM-dd HH:mm:ss";
         }
         SimpleDateFormat df = new SimpleDateFormat(format);
         String dateTime = df.format(calendar.getTime());
