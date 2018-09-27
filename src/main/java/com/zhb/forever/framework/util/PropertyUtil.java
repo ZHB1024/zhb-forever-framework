@@ -20,6 +20,7 @@ public class PropertyUtil {
     
     private static String uploadPath ;
     private static String downloadPath ;
+    private static String uploadThumbnailPath ;
     
     //mail
     private static String mailHost;
@@ -49,6 +50,7 @@ public class PropertyUtil {
                 
                 uploadPath = properties.getProperty("sys.upload.path");
                 downloadPath = properties.getProperty("sys.download.path");
+                uploadThumbnailPath = properties.getProperty("sys.upload.thumbnail.path");
                 
                 //mail
                 mailHost = properties.getProperty("sys.mail.vue.host");
@@ -86,6 +88,9 @@ public class PropertyUtil {
 
     public static String getUploadPath() {
         return uploadPath;
+    }
+    public static String getUploadThumbnailPath() {
+        return uploadThumbnailPath;
     }
 
     public static String getDownloadPath() {

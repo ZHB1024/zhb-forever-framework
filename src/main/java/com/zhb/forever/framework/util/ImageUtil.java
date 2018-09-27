@@ -7,6 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
@@ -318,6 +319,39 @@ public class ImageUtil {
     }
     
     /**
+     * 缩小图片
+     * @param  InputStream
+     */
+    public static byte[] smallImage(InputStream is, String suffix, long tempSize,long targetSize)
+            throws ImageReadException, IOException {
+        BufferedImage bi = null;
+        if (("jpg".equalsIgnoreCase(suffix)) || ("jpeg".equalsIgnoreCase(suffix)) || ("png".equalsIgnoreCase(suffix)))
+            bi = inpuStream2BufferedImage(is);
+        else {
+            throw new ImageReadException("非jpg或png格式照片");
+        }
+        byte[] result = null;
+        if (tempSize <= targetSize) {
+            result = FileUtil.readInputStreamAsBytes(is);
+        } else {
+            ByteArrayOutputStream tmp = new ByteArrayOutputStream();
+            bi = resizeImg(bi, bi.getWidth(), bi.getHeight());
+            ImageIO.write(bi, suffix, tmp);
+            tmp.close();
+            tempSize = tmp.size();
+            while (tempSize > targetSize) {
+                bi = resizeImg(bi, (int) (bi.getWidth() * 0.5F), (int) (bi.getHeight() * 0.5F));
+                tmp.reset();
+                ImageIO.write(bi, suffix, tmp);
+                tmp.close();
+                tempSize = tmp.size();
+            }
+            result = tmp.toByteArray();
+        }
+        return result;
+    }
+    
+    /**
      * 重新设定大小 图片
      * @param BufferedImage
      */
@@ -329,6 +363,24 @@ public class ImageUtil {
         AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(scaleX, scaleY), null);
         Itemp = op.filter(bi, null);
         return ((BufferedImage) Itemp);
+    }
+    
+    /**
+     * 重新设定大小 图片 Graphics2D
+     * @param BufferedImage  
+     */
+    public static BufferedImage resizeImg(BufferedImage image,int targetWidth, int targetHeight) {
+        try {
+            BufferedImage tmp = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2 = tmp.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2.drawImage(image, 0, 0, targetWidth, targetHeight, null);
+            g2.dispose();
+            return tmp;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     /**
@@ -626,6 +678,18 @@ public class ImageUtil {
         return null;
     }
 
+    public static String getImageSuffix(File image)throws IOException{  
+        String formatName = null;  
+        ImageInputStream iis = ImageIO.createImageInputStream(image);  
+        Iterator<ImageReader> imageReader =  ImageIO.getImageReaders(iis);  
+        if(imageReader.hasNext()){  
+            ImageReader reader = imageReader.next();  
+            formatName = reader.getFormatName();  
+        }  
+   
+        return formatName;  
+    }  
+    
     private static Font getFitFontPointSizeFont(Graphics2D g, String fontName, int fontStyle, String pressText,
             int fitPixelWidth) {
         int pointSize = 0;
