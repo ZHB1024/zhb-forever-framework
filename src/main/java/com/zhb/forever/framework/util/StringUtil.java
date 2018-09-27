@@ -65,6 +65,16 @@ public class StringUtil {
         return count;
     }
     
+    public static boolean equals(String str1,String str2) {
+        if (isBlank(str1) || isBlank(str2)) {
+            return false;
+        }
+        if (str1.equals(str2)) {
+            return true;
+        }
+        return false;
+    }
+    
     public static boolean isEmpty(Object str) {
         return ((str == null) || ("".equals(str)));
     }
