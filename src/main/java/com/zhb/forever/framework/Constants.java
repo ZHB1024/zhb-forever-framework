@@ -3,7 +3,7 @@ package com.zhb.forever.framework;
 public class Constants {
 
     // 上传文件大小设置
-    public static final Long FILE_MAX_SIZE = 20*1024*1024L;//20MB
+    public static final Long FILE_MAX_SIZE = 20971520L;//20MB
     public static final String FILE_MAX_SIZE_MB = FILE_MAX_SIZE/1024/1024 + "MB";//20MB
     
     //image 大小设置

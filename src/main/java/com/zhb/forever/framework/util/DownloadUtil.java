@@ -17,6 +17,13 @@ import org.apache.commons.codec.binary.Base64;
 
 public class DownloadUtil {
     
+    // 照片缓存30天
+    public static final int TIME_OUTS_SECOND = 2592000;
+    
+    /**
+     * 获取默认图片
+     * @param  filePath
+     */
     public static void downloadDefault(HttpServletRequest request, HttpServletResponse response,String filePath) {
         File defaultImage = new File(filePath);
         FileInputStream fis = null;
@@ -37,9 +44,23 @@ public class DownloadUtil {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            if (null != bo) {
+                try {
+                    bo.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             if (null != sos) {
                 try {
                     sos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (null != bi) {
+                try {
+                    bi.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -54,6 +75,10 @@ public class DownloadUtil {
         }
     }
     
+    /**
+     * 下载前，处理文件名和文件类型
+     * @param  fileName  contentType
+     */
     public static void processBeforeDownload(HttpServletRequest request, HttpServletResponse response,
             String contentType, String fileName) throws IOException {
         if (StringUtil.isBlank(contentType)) {
@@ -62,6 +87,17 @@ public class DownloadUtil {
         response.setContentType(String.format("%s;charset=utf-8", new Object[] { contentType }));
         response.setHeader("Content-Disposition",
                 String.format("attachment;filename=\"%s\"", new Object[] { getCodedFileName(request, fileName) }));
+    }
+    
+    /**
+     * 在浏览器端缓存，设置过期时间
+     * @param  fileName  contentType
+     */
+    public static void processExpiresTime(HttpServletResponse response) {
+        long currentTimeMillis = System.currentTimeMillis();
+        response.setDateHeader("Last-Modified", currentTimeMillis);
+        //在浏览器缓存30天
+        response.setDateHeader("Expires", currentTimeMillis + 1000*DownloadUtil.TIME_OUTS_SECOND);
     }
     
     public static String getCodedFileName(HttpServletRequest request, String fileName)
@@ -108,6 +144,10 @@ public class DownloadUtil {
         return result;
     }
     
+    /**
+     * 下载文件的随机名称  时间 + “-” + 4位随机数
+     * @return
+     */
     public static String randomName() {
         StringBuilder sb = new StringBuilder();
         sb.append(DateTimeUtil.getDateTime(Calendar.getInstance(), "yyyyMMddHHmmss"));

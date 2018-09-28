@@ -316,11 +316,12 @@ public class ImageUtil {
     public static byte[] smallImage(InputStream is, String suffix, long tempSize,long targetSize)
             throws ImageReadException, IOException {
         BufferedImage bi = null;
-        if (("jpg".equalsIgnoreCase(suffix)) || ("jpeg".equalsIgnoreCase(suffix)) || ("png".equalsIgnoreCase(suffix)))
+        bi = inpuStream2BufferedImage(is);
+        /*if (("jpg".equalsIgnoreCase(suffix)) || ("jpeg".equalsIgnoreCase(suffix)) || ("png".equalsIgnoreCase(suffix))) {
             bi = inpuStream2BufferedImage(is);
-        else {
+        }else {
             throw new ImageReadException("非jpg或png格式照片");
-        }
+        }*/
         byte[] result = null;
         if (tempSize <= targetSize) {
             result = FileUtil.readInputStreamAsBytes(is);
