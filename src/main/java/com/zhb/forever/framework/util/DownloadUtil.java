@@ -21,10 +21,24 @@ public class DownloadUtil {
     public static final int TIME_OUTS_SECOND = 2592000;
     
     /**
-     * 获取默认图片
+     * 下载前，处理文件名和文件类型
+     * @param  fileName  contentType
+     */
+    public static void processBeforeDownload(HttpServletRequest request, HttpServletResponse response,
+            String contentType, String fileName) throws IOException {
+        if (StringUtil.isBlank(contentType)) {
+            contentType = "APPLICATION/OCTET-STREAM";
+        }
+        response.setContentType(String.format("%s;charset=utf-8", new Object[] { contentType }));
+        response.setHeader("Content-Disposition",
+                String.format("attachment;filename=\"%s\"", new Object[] { getCodedFileName(request, fileName) }));
+    }
+    
+    /**
+     * 下载附件
      * @param  filePath
      */
-    public static void downloadDefault(HttpServletRequest request, HttpServletResponse response,String filePath) {
+    public static void downloadAttachment(HttpServletRequest request, HttpServletResponse response,String filePath) {
         File defaultImage = new File(filePath);
         FileInputStream fis = null;
         ServletOutputStream sos = null;
@@ -76,17 +90,64 @@ public class DownloadUtil {
     }
     
     /**
-     * 下载前，处理文件名和文件类型
-     * @param  fileName  contentType
+     * 下载图片，加水印
+     * @param  filePath  isGif
      */
-    public static void processBeforeDownload(HttpServletRequest request, HttpServletResponse response,
-            String contentType, String fileName) throws IOException {
-        if (StringUtil.isBlank(contentType)) {
-            contentType = "APPLICATION/OCTET-STREAM";
+    public static void downloadAttachmentWithWaterPrint(HttpServletRequest request, HttpServletResponse response,String filePath,boolean isGif) {
+        File file = new File(filePath);
+        
+        FileInputStream fis = null;
+        ServletOutputStream sos = null;
+        BufferedInputStream bi = null;
+        BufferedOutputStream bo = null;
+        try {
+            fis = new FileInputStream(file);
+            sos = response.getOutputStream();
+            bi = new BufferedInputStream(fis);
+            bo = new BufferedOutputStream(sos);
+            if (isGif) {
+                int bytesRead = 0;
+                byte[] buffer = new byte[8192];
+                while ((bytesRead = bi.read(buffer, 0, buffer.length)) != -1) {
+                    bo.write(buffer, 0, bytesRead);
+                }
+                bo.flush();
+            }else {
+                ImageUtil.pressText(bi, bo, 0.3f, 3, 3, new String[] { PropertyUtil.getWaterPrintWord() });
+            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if (null != bo) {
+                try {
+                    bo.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (null != sos) {
+                try {
+                    sos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (null != bi) {
+                try {
+                    bi.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (null != fis) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        response.setContentType(String.format("%s;charset=utf-8", new Object[] { contentType }));
-        response.setHeader("Content-Disposition",
-                String.format("attachment;filename=\"%s\"", new Object[] { getCodedFileName(request, fileName) }));
     }
     
     /**

@@ -31,6 +31,9 @@ public class PropertyUtil {
     private static String mailSmtpAuth;
     private static String mailSmtpTimeOut;
     
+    //水印
+    private static String waterPrintWord ;
+    
     static{
         String propertyPath = System.getenv("propertyPath");
         if (null == propertyPath) {
@@ -60,6 +63,8 @@ public class PropertyUtil {
                 mailProtocol = properties.getProperty("sys.mail.vue.protocol");
                 mailSmtpAuth = properties.getProperty("sys.mail.vue.smtp.auth");
                 mailSmtpTimeOut = properties.getProperty("sys.mail.vue.smtp.timeout");
+                
+                waterPrintWord = properties.getProperty("sys.water.print.word");
             } catch (IOException e) {
             }
         }
@@ -125,4 +130,7 @@ public class PropertyUtil {
         return mailSmtpTimeOut;
     }
 
+    public static String getWaterPrintWord() {
+        return waterPrintWord;
+    }
 }
