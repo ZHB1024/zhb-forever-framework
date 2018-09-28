@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -105,6 +106,13 @@ public class DownloadUtil {
             result = (-1 != agent.indexOf("MSIE")) || (-1 != agent.indexOf("Trident"));
         }
         return result;
+    }
+    
+    public static String randomName() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(DateTimeUtil.getDateTime(Calendar.getInstance(), "yyyyMMddHHmmss"));
+        sb.append("-" + RandomUtil.getRandomNumbers(4));
+        return sb.toString();
     }
 
 }
