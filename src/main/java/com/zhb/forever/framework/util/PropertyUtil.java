@@ -34,6 +34,11 @@ public class PropertyUtil {
     //水印
     private static String waterPrintWord ;
     
+    //spider
+    private static String spiderUrl;
+    private static String spiderUrlTarget;
+    private static Integer spiderTotalPage;
+    
     static{
         String propertyPath = System.getenv("propertyPath");
         if (null == propertyPath) {
@@ -63,8 +68,15 @@ public class PropertyUtil {
                 mailProtocol = properties.getProperty("sys.mail.vue.protocol");
                 mailSmtpAuth = properties.getProperty("sys.mail.vue.smtp.auth");
                 mailSmtpTimeOut = properties.getProperty("sys.mail.vue.smtp.timeout");
-                
+
+                //水印
                 waterPrintWord = properties.getProperty("sys.water.print.word");
+                
+                //spider
+                spiderUrl = properties.getProperty("sys.spider.image.url");
+                spiderUrlTarget = properties.getProperty("sys.spider.image.url.target");
+                spiderTotalPage = Integer.valueOf(properties.getProperty("sys.spider.image.total.page"));
+                
             } catch (IOException e) {
             }
         }
@@ -133,4 +145,17 @@ public class PropertyUtil {
     public static String getWaterPrintWord() {
         return waterPrintWord;
     }
+
+    public static String getSpiderUrl() {
+        return spiderUrl;
+    }
+
+    public static Integer getSpiderTotalPage() {
+        return spiderTotalPage;
+    }
+
+    public static String getSpiderUrlTarget() {
+        return spiderUrlTarget;
+    }
+    
 }

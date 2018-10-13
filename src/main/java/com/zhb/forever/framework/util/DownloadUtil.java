@@ -2,10 +2,15 @@ package com.zhb.forever.framework.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Calendar;
 
@@ -14,14 +19,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DownloadUtil {
+    
+    private static Logger logger = LoggerFactory.getLogger(DownloadUtil.class);
     
     // 照片缓存30天
     public static final int TIME_OUTS_SECOND = 2592000;
     
     /**
-     * 下载前，处理文件名和文件类型
+     * *下载前，处理文件名和文件类型
      * @param  fileName  contentType
      */
     public static void processBeforeDownload(HttpServletRequest request, HttpServletResponse response,
@@ -35,7 +44,7 @@ public class DownloadUtil {
     }
     
     /**
-     * 下载附件
+     * *下载附件
      * @param  filePath
      */
     public static void downloadAttachment(HttpServletRequest request, HttpServletResponse response,String filePath) {
@@ -90,7 +99,7 @@ public class DownloadUtil {
     }
     
     /**
-     * 下载图片，加水印
+     * *下载图片，加水印
      * @param  filePath  isGif
      */
     public static void downloadAttachmentWithWaterPrint(HttpServletRequest request, HttpServletResponse response,String filePath,boolean isGif) {
@@ -151,7 +160,7 @@ public class DownloadUtil {
     }
     
     /**
-     * 在浏览器端缓存，设置过期时间
+     * *在浏览器端缓存，设置过期时间
      * @param  fileName  contentType
      */
     public static void processExpiresTime(HttpServletResponse response) {
@@ -206,14 +215,49 @@ public class DownloadUtil {
     }
     
     /**
-     * 下载文件的随机名称  时间 + “-” + 4位随机数
-     * @return
-     */
-    public static String randomName() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(DateTimeUtil.getDateTime(Calendar.getInstance(), "yyyyMMddHHmmss"));
-        sb.append("-" + RandomUtil.getRandomNumbers(4));
-        return sb.toString();
-    }
+     * *根据网络地址下载文件
+     * 
+     * @param urlStr   fileName   savePath
+     * */
+    public static void  downLoadFromUrl(String urlStr,String fileName,String savePath) throws IOException{  
+        URL url = new URL(urlStr);    
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();    
+                //设置超时间为3秒  
+        //conn.setConnectTimeout(3*1000);  
+        //防止屏蔽程序抓取而返回403错误  
+        conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");  
+  
+        //得到输入流  
+        InputStream inputStream = conn.getInputStream();    
+        //获取自己数组  
+        byte[] getData = readInputStream(inputStream);      
+  
+        //文件保存位置  
+        File saveDir = new File(savePath);  
+        if(!saveDir.exists()){  
+            saveDir.mkdirs();  
+        }  
+        File file = new File(saveDir+File.separator+fileName);      
+        FileOutputStream fos = new FileOutputStream(file);       
+        fos.write(getData);   
+        if(fos!=null){  
+            fos.close();    
+        }  
+        if(inputStream!=null){  
+            inputStream.close();  
+        }  
+        logger.info("download success from " + url);
+    }  
+    
+    public static  byte[] readInputStream(InputStream inputStream) throws IOException {    
+        byte[] buffer = new byte[1024];    
+        int len = 0;    
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();    
+        while((len = inputStream.read(buffer)) != -1) {    
+            bos.write(buffer, 0, len);    
+        }    
+        bos.close();    
+        return bos.toByteArray();    
+    }    
 
 }

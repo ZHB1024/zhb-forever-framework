@@ -11,6 +11,8 @@ import org.apache.commons.lang3.time.DateUtils;
 
 public class DateTimeUtil {
 
+    public static final String TODAY_FORMAT = new SimpleDateFormat("yyyyMMdd").format(System.currentTimeMillis());
+    
     public static float subtract(Date start, Date end){
         long l = end.getTime()-start.getTime();
         double time =  (double)l / (60*60*1000);

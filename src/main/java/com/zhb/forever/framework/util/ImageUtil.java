@@ -310,7 +310,7 @@ public class ImageUtil {
     }
     
     /**
-     * 缩小图片
+     * *缩小图片
      * @param  InputStream
      */
     public static byte[] smallImage(InputStream is, String suffix, long tempSize,long targetSize)

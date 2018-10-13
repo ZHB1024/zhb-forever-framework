@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -407,6 +408,17 @@ public class FileUtil {
      */
     public static void copyInputStreamToFile(InputStream is, File file) throws IOException {
         FileUtils.copyInputStreamToFile(is, file);
+    }
+    
+    /**
+     * *时间 + “-” + 4位随机数
+     * @return
+     */
+    public static String randomName() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(DateTimeUtil.getDateTime(Calendar.getInstance(), "yyyyMMddHHmmss"));
+        sb.append("-" + RandomUtil.getRandomNumbers(4));
+        return sb.toString();
     }
 
 }
