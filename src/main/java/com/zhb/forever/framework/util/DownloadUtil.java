@@ -12,7 +12,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Calendar;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -219,7 +218,14 @@ public class DownloadUtil {
      * 
      * @param urlStr   fileName   savePath
      * */
-    public static void  downLoadFromUrl(String urlStr,String fileName,String savePath) throws IOException{  
+    public static void  downLoadFromUrl(String urlStr,String fileName,String savePath) throws IOException{
+        logger.info(urlStr);
+        if (StringUtil.isBlank(urlStr)) {
+            return;
+        }
+        if (!urlStr.contains("http")) {
+            urlStr += "http://";
+        }
         URL url = new URL(urlStr);    
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();    
                 //设置超时间为3秒  
@@ -246,7 +252,7 @@ public class DownloadUtil {
         if(inputStream!=null){  
             inputStream.close();  
         }  
-        logger.info("download success from " + url);
+        //logger.info("download success from " + url);
     }  
     
     public static  byte[] readInputStream(InputStream inputStream) throws IOException {    
