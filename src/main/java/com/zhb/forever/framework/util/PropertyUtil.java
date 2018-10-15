@@ -39,6 +39,9 @@ public class PropertyUtil {
     private static String spiderUrlTarget;
     private static Integer spiderTotalPage;
     
+    //system_logo_name
+    private static String systemLogoName;
+    
     static{
         String propertyPath = System.getenv("propertyPath");
         if (null == propertyPath) {
@@ -76,6 +79,9 @@ public class PropertyUtil {
                 spiderUrl = properties.getProperty("sys.spider.image.url");
                 spiderUrlTarget = properties.getProperty("sys.spider.image.url.target");
                 spiderTotalPage = Integer.valueOf(properties.getProperty("sys.spider.image.total.page"));
+                
+                //system_logo_name
+                systemLogoName = properties.getProperty("sys.logo.name");
                 
             } catch (IOException e) {
             }
@@ -156,6 +162,10 @@ public class PropertyUtil {
 
     public static String getSpiderUrlTarget() {
         return spiderUrlTarget;
+    }
+
+    public static String getSystemLogoName() {
+        return systemLogoName;
     }
     
 }
