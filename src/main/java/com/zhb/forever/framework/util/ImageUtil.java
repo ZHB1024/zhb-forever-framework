@@ -502,6 +502,56 @@ public class ImageUtil {
     }
     
     /**
+     * 裁剪图片
+     * @param bis
+     */
+    public static byte[] getCropPhotoBytes(ImageVO vo, ByteArrayInputStream bis) {
+        ImageInputStream iis = null;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            iis = ImageIO.createImageInputStream(bis);
+
+            Iterator it = ImageIO.getImageReadersByFormatName(vo.getSuffix());
+
+            ImageReader reader = (ImageReader) it.next();
+
+            reader.setInput(iis, true);
+
+            ImageReadParam param = reader.getDefaultReadParam();
+
+            Rectangle rect = new Rectangle(vo.getX(), vo.getY(), vo.getWidth(), vo.getHeight());
+
+            param.setSourceRegion(rect);
+
+            BufferedImage bi = reader.read(0, param);
+
+            ImageIO.write(bi, vo.getSuffix(), bos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (iis != null)
+                try {
+                    iis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            if (bis != null)
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            if (bos != null)
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        return bos.toByteArray();
+    }
+    
+    /**
      * 旋转图片
      * @param File
      */
@@ -704,51 +754,5 @@ public class ImageUtil {
         }
         return font;
     }
-    
-    public static byte[] equimultipleConvertToByte(int width, int height, int pwidth, int pheight,
-            BufferedImage inputImage) {
-            if ((width <= 0) || (height <= 0) || (pwidth <= 0) || (pheight <= 0) || (inputImage == null)) {
-                return new byte[0];
-            }
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            try {
-                if ((pwidth > 0) && (pheight > 0)) {
-                    if (pwidth / pheight >= width / height) {
-                        if (pwidth > width) {
-                            height = pheight * width / pwidth;
-                        } else {
-                            width = pwidth;
-                            height = pheight;
-                        }
-                    } else if (pheight > height) {
-                        width = pwidth * height / pheight;
-                    } else {
-                        width = pwidth;
-                        height = pheight;
-                    }
-
-                }
-
-                BufferedImage outputImg = new BufferedImage(width, height, 1);
-
-                outputImg.getGraphics().drawImage(inputImage.getScaledInstance(width, height, 4), 0, 0, null);
-                ImageIO.write(outputImg, "jpg", bos);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bos.toByteArray();
-        }
-    
-    public static byte[] equimultipleConvertToByte(int width, int height, int pwidth, int pheight, byte[] InputPhoto) {
-        if ((width <= 0) || (height <= 0) || (pwidth <= 0) || (pheight <= 0) || (InputPhoto == null)) {
-            return new byte[0];
-        }
-        BufferedImage inputImage = null;
-        try {
-            inputImage = ImageIO.read(new ByteArrayInputStream(InputPhoto));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return equimultipleConvertToByte(width, height, pwidth, pheight, inputImage);
-    }
+   
 }

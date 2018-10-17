@@ -30,7 +30,7 @@ public class ImageVO {
         this.height = height;
         this.radian = radian;
     }
-
+    
     public int getX() {
         return this.x;
     }
