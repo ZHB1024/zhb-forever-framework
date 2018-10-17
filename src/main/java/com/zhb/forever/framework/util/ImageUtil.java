@@ -12,6 +12,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -702,5 +703,52 @@ public class ImageUtil {
             return preFont;
         }
         return font;
+    }
+    
+    public static byte[] equimultipleConvertToByte(int width, int height, int pwidth, int pheight,
+            BufferedImage inputImage) {
+            if ((width <= 0) || (height <= 0) || (pwidth <= 0) || (pheight <= 0) || (inputImage == null)) {
+                return new byte[0];
+            }
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            try {
+                if ((pwidth > 0) && (pheight > 0)) {
+                    if (pwidth / pheight >= width / height) {
+                        if (pwidth > width) {
+                            height = pheight * width / pwidth;
+                        } else {
+                            width = pwidth;
+                            height = pheight;
+                        }
+                    } else if (pheight > height) {
+                        width = pwidth * height / pheight;
+                    } else {
+                        width = pwidth;
+                        height = pheight;
+                    }
+
+                }
+
+                BufferedImage outputImg = new BufferedImage(width, height, 1);
+
+                outputImg.getGraphics().drawImage(inputImage.getScaledInstance(width, height, 4), 0, 0, null);
+                ImageIO.write(outputImg, "jpg", bos);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bos.toByteArray();
+        }
+    
+    public static byte[] equimultipleConvertToByte(int width, int height, int pwidth, int pheight, byte[] InputPhoto) {
+        if ((width <= 0) || (height <= 0) || (pwidth <= 0) || (pheight <= 0) || (InputPhoto == null)) {
+            return new byte[0];
+        }
+        BufferedImage inputImage = null;
+        try {
+            inputImage = ImageIO.read(new ByteArrayInputStream(InputPhoto));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return equimultipleConvertToByte(width, height, pwidth, pheight, inputImage);
     }
 }
