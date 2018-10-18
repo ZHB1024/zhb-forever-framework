@@ -112,7 +112,7 @@ public class ImageUtil {
     }
 
     /**
-     * 加水印 
+     * *加水印 
      * @param InputStream
      * @throws IOException 
      */
@@ -192,7 +192,7 @@ public class ImageUtil {
     }
 
     /**
-     * 加水印 
+     * *加水印 
      * @param BufferedImage
      * @return
      */
@@ -276,7 +276,7 @@ public class ImageUtil {
     }
 
     /**
-     * 缩小图片
+     * *缩小图片
      * @param  BufferedImage
      */
     public static byte[] smallImage(File oriFile, String suffix, long targetSize)
@@ -345,7 +345,7 @@ public class ImageUtil {
     }
     
     /**
-     * 重新设定大小 图片
+     * *重新设定大小 图片
      * @param BufferedImage
      */
     public static BufferedImage resizeImg(BufferedImage bi, String suffix, int targetWidth, int targetHeight) {
@@ -359,7 +359,7 @@ public class ImageUtil {
     }
     
     /**
-     * 重新设定大小 图片 Graphics2D
+     * *重新设定大小 图片 Graphics2D
      * @param BufferedImage  
      */
     public static BufferedImage resizeImg(BufferedImage image,int targetWidth, int targetHeight) {
@@ -377,7 +377,7 @@ public class ImageUtil {
     }
 
     /**
-     * 重新设定大小 图片
+     * *重新设定大小 图片
      * @param File
      */
     public static byte[] resizeImg(File oriFile, String suffix, int width, int height) throws Exception {
@@ -386,7 +386,7 @@ public class ImageUtil {
     }
     
     /**
-     * 重新设定大小 图片
+     * *重新设定大小 图片
      * @param InputStream
      */
     public static byte[] resizeImg(InputStream is, String suffix, int width, int height) throws Exception {
@@ -423,7 +423,7 @@ public class ImageUtil {
 
     
     /**
-     * 裁剪图片
+     * *裁剪图片
      * @param file
      */
     public static ImageVO cropImg(File file, int x, int y, int width, int height) {
@@ -432,7 +432,7 @@ public class ImageUtil {
     }
 
     /**
-     * 裁剪图片
+     * *裁剪图片
      * @param file
      */
     public static ImageVO cropImg(File file, ImageVO vo) {
@@ -469,7 +469,7 @@ public class ImageUtil {
     }
 
     /**
-     * 裁剪图片
+     * *裁剪图片
      * @param InputStream
      */
     public static ImageVO cropImg(String suffix, InputStream is, OutputStream os, ImageVO vo) {
@@ -502,7 +502,7 @@ public class ImageUtil {
     }
     
     /**
-     * 裁剪图片
+     * *裁剪图片
      * @param bis
      */
     public static byte[] getCropPhotoBytes(ImageVO vo, ByteArrayInputStream bis) {
@@ -552,14 +552,14 @@ public class ImageUtil {
     }
     
     /**
-     * 旋转图片
+     * *旋转图片
      * @param File
      */
     public static ImageVO rotateImgFile(File file, ImageVO vo) {
         return rotateImgFile(file, vo.getRadian());
     }
     /**
-     * 旋转图片
+     * *旋转图片
      * @param File
      */
     public static ImageVO rotateImgFile(File file, int radian) {
@@ -605,7 +605,7 @@ public class ImageUtil {
     }
     
     /**
-     * 旋转图片
+     * *旋转图片
      * @param InputStream
      */
     public static byte[] rotateImg2(InputStream is, ImageVO vo) throws IOException {
@@ -673,7 +673,7 @@ public class ImageUtil {
     }
     
     /**
-     * 转换image到新jpg file
+     * *转换image到新jpg file
      * @param File
      */
     public static void reEncodeJPG(File src, File dest) throws Exception {
@@ -694,7 +694,7 @@ public class ImageUtil {
     }
 
     /**
-     * 转换imagePath 为 jpg
+     * *转换imagePath 为 jpg
      * @param filePathName
      */
     public static BufferedImage reEncodeJPG(String filePathName) throws Exception {
