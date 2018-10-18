@@ -25,6 +25,15 @@ public class DateTimeUtil {
         return bd.floatValue();
     }
     
+    public static String getCurrentTime(String format) {
+        if (StringUtil.isBlank(format)) {
+            format = "yyyy-MM-dd HH:mm:ss";
+        }
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        String dateTime = df.format(Calendar.getInstance().getTime());
+        return dateTime;
+    }
+    
     /**
      * *  获取日期时间字符串,例如： yyyy-MM-dd HH:mm:ss
      * @param calendar
