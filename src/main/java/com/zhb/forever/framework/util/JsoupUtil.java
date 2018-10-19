@@ -48,7 +48,7 @@ private static Logger logger = LoggerFactory.getLogger(JsoupUtil.class);
             document = Jsoup.connect(url).get();
         } catch (IOException e) {
             e.printStackTrace();
-            logger.info("init document fail");
+            logger.info("init document fail...........");
         }
         return document;
     }
