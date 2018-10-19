@@ -219,7 +219,6 @@ public class DownloadUtil {
      * @param urlStr   fileName   savePath
      * */
     public static void  downLoadFromUrl(String urlStr,String fileName,String savePath) throws IOException{
-        logger.info(urlStr);
         if (StringUtil.isBlank(urlStr)) {
             return;
         }
@@ -235,7 +234,7 @@ public class DownloadUtil {
   
         //得到输入流  
         InputStream inputStream = conn.getInputStream();    
-        //获取自己数组  
+        //获取字节数组  
         byte[] getData = readInputStream(inputStream);      
   
         //文件保存位置  
@@ -252,7 +251,6 @@ public class DownloadUtil {
         if(inputStream!=null){  
             inputStream.close();  
         }  
-        //logger.info("download success from " + url);
     }  
     
     public static  byte[] readInputStream(InputStream inputStream) throws IOException {    
