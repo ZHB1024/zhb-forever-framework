@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -45,7 +46,11 @@ private static Logger logger = LoggerFactory.getLogger(JsoupUtil.class);
         }
         Document document = null;
         try {
-            document = Jsoup.connect(url).get();
+            
+            Connection con = Jsoup.connect(url);
+            if (null != con) {
+                document = con.get();
+            }
         } catch (IOException e) {
             e.printStackTrace();
             logger.info("init document fail...........");
