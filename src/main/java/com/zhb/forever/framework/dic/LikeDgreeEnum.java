@@ -15,7 +15,7 @@ import com.zhb.forever.framework.vo.KeyValueVO;
 
 public enum LikeDgreeEnum {
     
-    UN_LIKE("不喜欢",1),LIKE("喜欢",2),VERY_LIKE("非常喜欢",3);
+    UN_LIKE("md-outlet",1),LIKE("md-happy",2),VERY_LIKE("md-heart",3);
     
     private String name;
     private Integer index;
