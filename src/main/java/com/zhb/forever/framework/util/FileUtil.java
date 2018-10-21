@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -420,5 +421,52 @@ public class FileUtil {
         sb.append("-" + RandomUtil.getRandomNumbers(4));
         return sb.toString();
     }
-
+    
+    /**
+     * *保留小数点后几位数字
+     * @param src
+     * @param scale 位数
+     * @return
+     */
+    public static Double getFileSizeKB(Double fileSize, int scale) {
+        //设置位数  
+        //表示四舍五入，可以选择其他舍值方式，例如去尾，等等.  
+        int   roundingMode  =  4;
+        Double src = fileSize/1024;
+        BigDecimal   bd  =   new  BigDecimal(src);  
+        bd   =  bd.setScale(scale,roundingMode);  
+        return bd.doubleValue();
+    }
+    
+    /**
+     * *保留小数点后几位数字
+     * @param src
+     * @param scale 位数
+     * @return
+     */
+    public static Double getFileSizeMB(Double fileSize, int scale) {
+        //设置位数  
+        //表示四舍五入，可以选择其他舍值方式，例如去尾，等等.  
+        int   roundingMode  =  4;
+        Double src = fileSize/1024/1024;
+        BigDecimal   bd  =   new  BigDecimal(src);  
+        bd   =  bd.setScale(scale,roundingMode);  
+        return bd.doubleValue();
+    }
+    
+    /**
+     * *保留小数点后几位数字
+     * @param src
+     * @param scale 位数
+     * @return
+     */
+    public static Double getFileSizeGB(Double fileSize, int scale) {
+        //设置位数  
+        //表示四舍五入，可以选择其他舍值方式，例如去尾，等等.  
+        int   roundingMode  =  4;
+        Double src = fileSize/1024/1024/1024;
+        BigDecimal   bd  =   new  BigDecimal(src);  
+        bd   =  bd.setScale(scale,roundingMode);  
+        return bd.doubleValue();
+    }
 }
