@@ -136,6 +136,13 @@
     		<version>26.0-jre</version>
 		</dependency>
 		
+		<!-- com.google.protobuf -->
+		<dependency>  
+    		<groupId>com.google.protobuf</groupId>  
+    		<artifactId>protobuf-java</artifactId>  
+    		<version>3.6.1</version>  
+		</dependency>
+		
     
   </dependencies>
   <build>
