@@ -8,7 +8,7 @@ import com.zhb.forever.framework.vo.KeyValueVO;
 
 public enum AttachmentTypeEnum {
     
-    UNDEFINED("undefined",0),IMAGE("image",1),EXCEL("excel",2),WORD("word",3),
+    UNDEFINED("未知",0),IMAGE("image",1),EXCEL("excel",2),WORD("word",3),
     PDF("pdf",4),TXT("txt",5),VIDEO("video",6),AUDIO("audio",7),ZIP("zip",8),YELLOW("yellow",9);
     
     private String name;
