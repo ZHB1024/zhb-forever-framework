@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Page<T> implements Serializable {
+    
+    
+    public static final transient Page EMPTY_PAGE = new Page(new ArrayList(0), 0, 0, 0, false);
 
     /**
      * 

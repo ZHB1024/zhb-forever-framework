@@ -111,10 +111,6 @@ public class StringUtil {
         return ((str != null) && (str.length() > 0));
     }
 
-    public static boolean hasLength(String str) {
-        return hasLength(str);
-    }
-
     public static boolean hasText(CharSequence str) {
         if (!(hasLength(str))) {
             return false;
@@ -278,7 +274,7 @@ public class StringUtil {
     }
 
     public static String replace(String inString, String oldPattern, String newPattern) {
-        if ((!(hasLength(inString))) || (!(hasLength(oldPattern))) || (newPattern == null)) {
+        if ((!(isEmpty(inString))) || (!(isEmpty(oldPattern))) || (newPattern == null)) {
             return inString;
         }
         StringBuilder sb = new StringBuilder();
