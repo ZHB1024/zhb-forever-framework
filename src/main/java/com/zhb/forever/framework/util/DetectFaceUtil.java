@@ -1,0 +1,93 @@
+package com.zhb.forever.framework.util;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author   zhanghb<a href="mailto:zhb20111503@126.com">zhanghb</a>
+ * @createDate 2018年10月29日下午4:13:05
+ */
+
+public class DetectFaceUtil {
+
+    private static String ACCESS_TOKEN = "24.89e1d23d677d3bf2cfea7703ee251f25.2592000.1520406800.282335-10795842";
+
+    public static String FACE_URL = "https://aip.baidubce.com/rest/2.0/face/v1/detect";
+
+    public static String detectFace(InputStream faceInput) throws Exception {
+        byte[] imgData = FileUtil.readInputStreamAsBytes(faceInput);
+        String imgStr = Base64Util.encode(imgData);
+        String imgParam = URLEncoder.encode(imgStr, "UTF-8");
+
+        String param = "max_face_num=" + 1 + "&face_fields="
+                + "age,beauty,expression,faceshape,gender,glasses,landmark,race,qualities" + "&image=" + imgParam;
+
+        return post(FACE_URL, ACCESS_TOKEN, param);
+    }
+
+    public static String post(String requestUrl, String accessToken, String params) throws Exception {
+        String contentType = "application/x-www-form-urlencoded";
+        return post(requestUrl, accessToken, contentType, params);
+    }
+
+    public static String post(String requestUrl, String accessToken, String contentType, String params)
+            throws Exception {
+        String encoding = "UTF-8";
+        if (requestUrl.contains("nlp")) {
+            encoding = "GBK";
+        }
+        return post(requestUrl, accessToken, contentType, params, encoding);
+    }
+
+    public static String post(String requestUrl, String accessToken, String contentType, String params, String encoding)
+            throws Exception {
+        String url = requestUrl + "?access_token=" + accessToken;
+        return postGeneralUrl(url, contentType, params, encoding);
+    }
+
+    public static String postGeneralUrl(String generalUrl, String contentType, String params, String encoding)
+            throws Exception {
+        URL url = new URL(generalUrl);
+        // 打开和URL之间的连接
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        // 设置通用的请求属性
+        connection.setRequestProperty("Content-Type", contentType);
+        connection.setRequestProperty("Connection", "Keep-Alive");
+        connection.setUseCaches(false);
+        connection.setDoOutput(true);
+        connection.setDoInput(true);
+
+        // 得到请求的输出流对象
+        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+        out.write(params.getBytes(encoding));
+        out.flush();
+        out.close();
+
+        // 建立实际的连接
+        connection.connect();
+        // 获取所有响应头字段
+        Map<String, List<String>> headers = connection.getHeaderFields();
+        // 遍历所有的响应头字段
+        for (String key : headers.keySet()) {
+            System.err.println(key + "--->" + headers.get(key));
+        }
+        // 定义 BufferedReader输入流来读取URL的响应
+        BufferedReader in = null;
+        in = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding));
+        String result = "";
+        String getLine;
+        while ((getLine = in.readLine()) != null) {
+            result += getLine;
+        }
+        in.close();
+        return result;
+    }
+}

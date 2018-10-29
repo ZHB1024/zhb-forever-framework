@@ -143,6 +143,28 @@
     		<version>3.6.1</version>  
 		</dependency>
 		
+		<!-- tess4j 图像识别-->
+		<!-- <dependency>
+    		<groupId>net.sourceforge.tess4j</groupId>
+    		<artifactId>tess4j</artifactId>
+    		<version>3.2.1</version>
+    		<exclusions>
+    		  <exclusion>
+            	<groupId>org.slf4j</groupId>
+            	<artifactId>slf4j-api</artifactId>
+    		  </exclusion>
+    		  <exclusion>
+            	<groupId>org.slf4j</groupId>
+            	<artifactId>slf4j-log4j12</artifactId>
+    		  </exclusion>
+    		  <exclusion>
+            	<groupId>ch.qos.logback</groupId>
+            	<artifactId>logback-classic</artifactId>
+    		  </exclusion>
+    		</exclusions>
+		</dependency> -->
+		
+		
     
   </dependencies>
   <build>
