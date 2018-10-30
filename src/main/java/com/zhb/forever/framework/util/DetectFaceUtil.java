@@ -112,7 +112,7 @@ public class DetectFaceUtil {
     
     //openCV 检测人脸数量
     public static int getPersonNum(byte[] imageBytes) {
-        String classifierFilePath = "lbpcascade_frontalface.xml";
+        String classifierFilePath = "haarcascade_frontalface_alt.xml";
 
         File tempFile = null;
         //生成临时文件
