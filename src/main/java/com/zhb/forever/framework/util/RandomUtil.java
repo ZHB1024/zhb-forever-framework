@@ -3,6 +3,10 @@ package com.zhb.forever.framework.util;
 import java.util.Random;
 import java.util.UUID;
 
+import ognl.Ognl;
+import ognl.OgnlContext;
+import ognl.OgnlException;
+
 public class RandomUtil {
 	
 	private static Random random = new Random();
@@ -110,5 +114,62 @@ public class RandomUtil {
         int mod = hashCode % range;
         return mod;
     }
+    
+    
+    /**
+     * 产生min-max之间的随机数字
+     * @param min
+     * @param max
+     * @return
+     */
+    public static final long getRandom(int min, int max){
+        return Math.round(Math.random()*(max-min)+min);
+    }
+
+    /**
+     * 获取min-max之间的n个不重复随机数字<br/>
+     * n<=max-min否则返回null
+     * @param min
+     * @param max
+     * @param n
+     * @return
+     */
+    public static final long[] getRandoms(int min, int max, int n){
+        if(n > max-min)
+            return null;
+        long[] longRet = new long[n];
+        long intRd = 0; // 存放随机数
+        int count = 0; // 记录生成的随机数个数
+        int flag = 0; // 是否已经生成过标志
+        while (count < n) {
+            intRd = getRandom(min, max);
+            for (int i = 0; i < count; i++) {
+                if (longRet[i] == intRd) {
+                    flag = 1;
+                    break;
+                } else {
+                    flag = 0;
+                }
+            }
+            if (flag == 0) {
+                longRet[count] = intRd;
+                count++;
+            }
+        }
+        return longRet;
+    }
+    
+    /**
+     * 计算表达式
+     * @param expressionString
+     * @return
+     * @throws OgnlException
+     */
+    public static final int getExpressionResults(String expressionString) throws OgnlException {
+        OgnlContext ctx = new OgnlContext();
+        Object expression = Ognl.parseExpression(expressionString);
+        return (Integer) Ognl.getValue(expression, ctx, (Object)null);
+    }
+
 
 }
