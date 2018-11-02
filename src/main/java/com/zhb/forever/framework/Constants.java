@@ -12,5 +12,5 @@ public class Constants {
     
     //缩略图大小
     public static final long SMALL_IMAGE_SIZE = 10240;//10KB
-
+    
 }
