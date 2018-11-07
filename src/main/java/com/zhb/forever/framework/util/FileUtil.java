@@ -26,8 +26,8 @@ import org.apache.sanselan.util.IOUtils;
 
 public class FileUtil {
     
-    public static final Map<String, String> FILE_TYPE_MAP = new HashMap();
-    public static final Map<String, String> EXCEL_TYPE_MAP = new HashMap();
+    public static final Map<String, String> FILE_TYPE_MAP = new HashMap<String, String>();
+    public static final Map<String, String> EXCEL_TYPE_MAP = new HashMap<String, String>();
     private static final byte[] DBF_HEADER = { 3, 48 };
 
     public static int blockSize = 8192;
@@ -55,7 +55,7 @@ public class FileUtil {
     }
     
     /**
-        * 读取txt文件的内容
+        * *读取txt文件的内容
         * @param file 想要读取的文件对象
         * @return 返回文件内容
         */
@@ -75,7 +75,7 @@ public class FileUtil {
        }
        
        /**
-        * 读取doc文件内容
+        * *读取doc文件内容
         * @param file 想要读取的文件对象
         * @return 返回文件内容
         */
@@ -94,7 +94,7 @@ public class FileUtil {
        }
        
        /**
-        * 过滤目录下的文件
+        * *过滤目录下的文件
         * @param dirPath 想要获取文件的目录
         * @return 返回文件list
         */
@@ -110,7 +110,7 @@ public class FileUtil {
        }
        
        /**
-        * 判断是否为目标文件，目前支持txt xls doc格式
+        * *判断是否为目标文件，目前支持txt xls doc格式
         * @param fileName 文件名称
         * @return 如果是文件类型满足过滤条件，返回true；否则返回false
         */
@@ -126,7 +126,7 @@ public class FileUtil {
        }
        
        /**
-        * 删除文件目录下的所有文件
+        * *删除文件目录下的所有文件
         * @param file 要删除的文件目录
         * @return 如果成功，返回true.
         */
@@ -204,7 +204,7 @@ public class FileUtil {
 
 
     /**
-     * 获取文件类型
+     ** 获取文件类型
      * @param filePath 文件路径
      * @return 文件类型
      */
@@ -215,7 +215,7 @@ public class FileUtil {
     }
 
     /**
-     * 获取文件类型
+     * *获取文件类型
      * @param bytes 文件字节数组
      * @return 文件类型
      */
@@ -324,7 +324,7 @@ public class FileUtil {
     }
     
     /**
-     * 读取文件内容，作为字符串返回
+     * *读取文件内容，作为字符串返回
      */
     public static String readFileAsString(String filePath) throws IOException {
         File file = new File(filePath);
@@ -344,14 +344,14 @@ public class FileUtil {
         // 用于保存实际读取的字节数
         int hasRead = 0;
         while ((hasRead = fis.read(bbuf)) > 0) {
-            sb.append(new String(bbuf, 0, hasRead));
+            sb.append(new String(bbuf, 0, hasRead,"UTF-8"));
         }
         fis.close();
         return sb.toString();
     }
 
     /**
-     * 根据文件路径读取byte[] 数组
+     * *根据文件路径读取byte[] 数组
      */
     public static byte[] readFilePathAsBytes(String filePath) throws IOException {
         File file = new File(filePath);
@@ -363,7 +363,7 @@ public class FileUtil {
     }
     
     /**
-     * 根据文件路径读取byte[] 数组
+     * *根据文件路径读取byte[] 数组
      */
     public static byte[] readFileAsBytes(File file) throws IOException {
         if (!file.exists()) {
