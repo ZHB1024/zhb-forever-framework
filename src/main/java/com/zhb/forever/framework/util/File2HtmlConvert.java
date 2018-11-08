@@ -55,10 +55,10 @@ public class File2HtmlConvert {
     private static final String EXCEL_XLS = "xls";
     private static final String EXCEL_XLSX = "xlsx";
 
-    public static void main(String[] args) throws Throwable {
-        //doc2Html("D:\\poi-test\\wordToHtml\\test1.doc","D:\\poi-test\\wordToHtml\\test1.html");
-        //docx2Html("D:\\poi-test\\wordToHtml\\test2.docx","D:\\poi-test\\wordToHtml\\test2.html");
-       }
+    public static void main(String[] args) {
+        File file = new File("D:\\123.ppt");
+        ppt2Image(file);
+    }
     
     /**
      * *将doc文件流转化为html字符串返回
@@ -252,30 +252,26 @@ public class File2HtmlConvert {
     
     public static boolean ppt2Image(File file) {   
         boolean isppt = checkFile(file);   
-        if (!isppt) {   
-            System.out.println("The image you specify don't exit!");   
-            return false;   
+        if (!isppt) {
+            return false;
         }   
-        try {   
-
+        try {
             FileInputStream is = new FileInputStream(file);   
             SlideShow ppt = new SlideShow(is);   
             is.close();   
             Dimension pgsize = ppt.getPageSize();   
             org.apache.poi.hslf.model.Slide[] slide = ppt.getSlides();   
             for (int i = 0; i < slide.length; i++) {   
-                System.out.print("第" + i + "页。");   
-
                 TextRun[] truns = slide[i].getTextRuns();      
-                for ( int k=0;k<truns.length;k++){      
-                   RichTextRun[] rtruns = truns[k].getRichTextRuns();      
-                  for(int l=0;l<rtruns.length;l++){      
-                       int index = rtruns[l].getFontIndex();      
+                for ( int k=0;k<truns.length;k++){
+                    RichTextRun[] rtruns = truns[k].getRichTextRuns();      
+                    for(int l=0;l<rtruns.length;l++){
+                        int index = rtruns[l].getFontIndex();      
                         String name = rtruns[l].getFontName();                
                         rtruns[l].setFontIndex(1);      
                         rtruns[l].setFontName("宋体");  
-//                        System.out.println(rtruns[l].getText());
-                   }      
+                        System.out.println(rtruns[l].getText());
+                     }
                 }      
                 BufferedImage img = new BufferedImage(pgsize.width,pgsize.height, BufferedImage.TYPE_INT_RGB);   
 
@@ -285,16 +281,13 @@ public class File2HtmlConvert {
                 slide[i].draw(graphics);   
 
                 // 这里设置图片的存放路径和图片的格式(jpeg,png,bmp等等),注意生成文件路径   
-                FileOutputStream out = new FileOutputStream("D:/poi-test/pptToImg/pict_"+ (i + 1) + ".jpeg");   
-                javax.imageio.ImageIO.write(img, "jpeg", out);   
+                FileOutputStream out = new FileOutputStream("D:/poi-test/pptToImg/pict_"+ (i + 1) + ".jpg");   
+                javax.imageio.ImageIO.write(img, "jpg", out);   
                 out.close();   
-
             }   
-            System.out.println("success!!");   
             return true;   
         } catch (FileNotFoundException e) {   
             System.out.println(e);   
-            // System.out.println("Can't find the image!");   
         } catch (IOException e) {   
         }   
         return false;   
