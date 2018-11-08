@@ -3,6 +3,7 @@ package com.zhb.forever.framework.util;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -469,4 +471,33 @@ public class FileUtil {
         bd   =  bd.setScale(scale,roundingMode);  
         return bd.doubleValue();
     }
+    
+    /** 
+     * *写文件 
+     *  
+     * @param content 
+     * @param path 
+     */  
+    public static void writeFile(String content, String path) {  
+        FileOutputStream fos = null;  
+        BufferedWriter bw = null;  
+        try {  
+            File file = new File(path);  
+            fos = new FileOutputStream(file);  
+            bw = new BufferedWriter(new OutputStreamWriter(fos, "utf-8"));  
+            bw.write(content);  
+        } catch (FileNotFoundException fnfe) {  
+            fnfe.printStackTrace();  
+        } catch (IOException ioe) {  
+            ioe.printStackTrace();  
+        } finally {  
+            try {  
+                if (bw != null)  
+                    bw.close();  
+                if (fos != null)  
+                    fos.close();  
+            } catch (IOException ie) {  
+            }  
+        }  
+    }  
 }

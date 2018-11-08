@@ -19,7 +19,7 @@ public class RandomUtil {
 	
 	public static String getRandomUUID() {
         String uuid = UUID.randomUUID().toString();
-        uuid = StringUtil.replace(uuid, "-", "");
+        uuid = uuid.replace("-", "");
         return uuid;
     }
 	
