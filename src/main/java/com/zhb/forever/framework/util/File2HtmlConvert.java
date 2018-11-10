@@ -206,7 +206,7 @@ public class File2HtmlConvert {
         try{
             HSSFWorkbook excelBook = new HSSFWorkbook();
 
-          //判断Excel文件将07+版本转换为03版本
+            //判断Excel文件将07+版本转换为03版本
             if(suffix.endsWith(EXCEL_XLS)){  //Excel 2003 
                 excelBook = new HSSFWorkbook(input); 
             }

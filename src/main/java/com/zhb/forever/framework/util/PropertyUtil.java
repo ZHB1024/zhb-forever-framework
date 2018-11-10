@@ -42,6 +42,10 @@ public class PropertyUtil {
     //system_logo_name
     private static String systemLogoName;
     
+    //temp path
+    private static String tempUploadPath;
+    private static String tempDownloadPath;
+    
     static{
         String propertyPath = System.getenv("propertyPath");
         if (null == propertyPath) {
@@ -82,6 +86,9 @@ public class PropertyUtil {
                 
                 //system_logo_name
                 systemLogoName = properties.getProperty("sys.logo.name");
+                
+                tempUploadPath = properties.getProperty("sys.temp.upload.path");
+                tempDownloadPath = properties.getProperty("sys.temp.download.path");
                 
             } catch (IOException e) {
             }
@@ -167,5 +174,13 @@ public class PropertyUtil {
     public static String getSystemLogoName() {
         return systemLogoName;
     }
-    
+
+    public static String getTempUploadPath() {
+        return tempUploadPath;
+    }
+
+    public static String getTempDownloadPath() {
+        return tempDownloadPath;
+    }
+
 }
