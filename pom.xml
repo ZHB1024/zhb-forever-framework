@@ -112,6 +112,13 @@
             </exclusions>
         </dependency>
         
+        <!-- read pdf -->
+        <dependency>
+  			<groupId>org.apache.pdfbox</groupId>
+  			<artifactId>pdfbox</artifactId>
+  			<version>2.0.4</version>
+		</dependency>
+        
         <!-- file reader -->
         <dependency>
             <groupId>de.huxhorn.lilith</groupId>

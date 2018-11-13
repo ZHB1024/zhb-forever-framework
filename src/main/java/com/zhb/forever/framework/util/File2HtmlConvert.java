@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,6 +29,9 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.poi.hslf.extractor.PowerPointExtractor;
 import org.apache.poi.hslf.model.TextRun;
 import org.apache.poi.hslf.usermodel.RichTextRun;
 import org.apache.poi.hslf.usermodel.SlideShow;
@@ -46,6 +48,8 @@ import org.apache.poi.xwpf.converter.core.FileImageExtractor;
 import org.apache.poi.xwpf.converter.xhtml.XHTMLConverter;
 import org.apache.poi.xwpf.converter.xhtml.XHTMLOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 /**
@@ -55,12 +59,19 @@ import org.w3c.dom.Document;
 
 public class File2HtmlConvert {
     
+    private static Logger logger = LoggerFactory.getLogger(File2HtmlConvert.class);
+    
     private static final String EXCEL_XLS = "xls";
     private static final String EXCEL_XLSX = "xlsx";
 
     public static void main(String[] args) {
-        File file = new File("D:\\123.ppt");
-        ppt2Image(file);
+        File file = new File("D:\\sample.pdf");
+        try {
+            readPDF2String(file);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -199,7 +210,7 @@ public class File2HtmlConvert {
     }
     
     /**
-     * *将excel文件流转化为html字符串返回
+     * *将excel文件流转化为html
      * @param input
      * @param suffix
      * @param encode
@@ -253,6 +264,10 @@ public class File2HtmlConvert {
         }
     }
     
+    /**
+     * *将ppt文件流转化为image
+     * @param file
+     */
     public static boolean ppt2Image(File file) {   
         boolean isppt = checkFile(file);   
         if (!isppt) {
@@ -296,15 +311,28 @@ public class File2HtmlConvert {
         return false;   
     }   
     
+    
     /**
-     * *读取txt文件的内容
+     * *读取ppt文件的内容
+     * @param file 
+     * @return 返回文件内容
+     * @throws IOException 
+     */
+    public static String readPPT2String(File file) throws IOException {
+        FileInputStream fi = new FileInputStream(file);
+        PowerPointExtractor ppExtractor = new PowerPointExtractor(fi);
+        return ppExtractor.getText();
+    }
+    
+    /**
+     * *读取txt
      * @param file 
      * @return 返回文件内容
      * @throws IOException 
      * @throws FileNotFoundException 
      * @throws UnsupportedEncodingException 
      */
-    public static String readTxtString(File file) throws UnsupportedEncodingException, FileNotFoundException, IOException{
+    public static String readTxt2String(File file) throws UnsupportedEncodingException, FileNotFoundException, IOException{
         StringBuilder sb = new StringBuilder();
         BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(file),FileUtil.getCharset(file)));
         String line = null;
@@ -313,6 +341,53 @@ public class File2HtmlConvert {
             sb.append(line) ;
         }
         br.close();
+        return sb.toString();
+    }
+    
+    /**
+     * *将txt文件流转化为html
+     * @param file 
+     * @return 返回文件内容
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     * @throws UnsupportedEncodingException 
+     */
+    public static String readTxt2Html(File file) throws UnsupportedEncodingException, FileNotFoundException, IOException{
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(file),FileUtil.getCharset(file)));
+        String line = null;
+        while ((line = br.readLine()) != null) {
+            sb.append("<br>") ;
+            sb.append(line) ;
+        }
+        br.close();
+        return sb.toString();
+    }
+    
+    /**
+     * 读取pdf
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static String readPDF2String(File file) throws IOException{
+        PDDocument document = PDDocument.load(file);
+        // 获取页码
+        int pages = document.getNumberOfPages();
+        logger.info("共 " + pages + " 页");
+        
+        StringBuilder sb = new StringBuilder();
+        for(int page=1;page <= pages;page++) {
+            PDFTextStripper stripper=new PDFTextStripper();
+            stripper.setSortByPosition(false);
+            stripper.setStartPage(page);
+            stripper.setEndPage(page);
+            String result = stripper.getText(document);
+            sb.append(result);
+            logger.info("----------------------------------------------------");
+            logger.info(result);
+        }
+        document.close();
         return sb.toString();
     }
     
