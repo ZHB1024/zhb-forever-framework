@@ -5,13 +5,16 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -292,6 +295,26 @@ public class File2HtmlConvert {
         }   
         return false;   
     }   
+    
+    /**
+     * *读取txt文件的内容
+     * @param file 
+     * @return 返回文件内容
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     * @throws UnsupportedEncodingException 
+     */
+    public static String readTxtString(File file) throws UnsupportedEncodingException, FileNotFoundException, IOException{
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(file),FileUtil.getCharset(file)));
+        String line = null;
+        while ((line = br.readLine()) != null) {
+            sb.append("\n") ;
+            sb.append(line) ;
+        }
+        br.close();
+        return sb.toString();
+    }
     
     // function 检查文件是否为PPT   
     public static boolean checkFile(File file) {   

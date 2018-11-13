@@ -56,45 +56,6 @@ public class FileUtil {
         EXCEL_TYPE_MAP.put("504b03040a0000000000", "xlsx");
     }
     
-    /**
-        * *读取txt文件的内容
-        * @param file 想要读取的文件对象
-        * @return 返回文件内容
-        */
-       public static String txtString(File file){
-           String result = "";
-           try{
-               BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
-               String s = null;
-               while((s = br.readLine())!=null){//使用readLine方法，一次读一行
-                   result = result + "\n" +s;
-               }
-               br.close();    
-           }catch(Exception e){
-               e.printStackTrace();
-           }
-           return result;
-       }
-       
-       /**
-        * *读取doc文件内容
-        * @param file 想要读取的文件对象
-        * @return 返回文件内容
-        */
-       public static String docString(File file){
-           String result = "";
-           try{
-               FileInputStream fis = new FileInputStream(file);
-               HWPFDocument doc = new HWPFDocument(fis);
-               Range rang = doc.getRange();
-               result += rang.text();
-               fis.close();
-           }catch(Exception e){
-               e.printStackTrace();
-           }
-           return result;
-       }
-       
        /**
         * *过滤目录下的文件
         * @param dirPath 想要获取文件的目录
@@ -326,33 +287,6 @@ public class FileUtil {
     }
     
     /**
-     * *读取文件内容，作为字符串返回
-     */
-    public static String readFileAsString(String filePath) throws IOException {
-        File file = new File(filePath);
-        if (!file.exists()) {
-            throw new FileNotFoundException(filePath);
-        }
-
-        if (file.length() > 1024 * 1024 * 1024) {
-            throw new IOException("File is too large");
-        }
-
-        StringBuilder sb = new StringBuilder((int) (file.length()));
-        // 创建字节输入流
-        FileInputStream fis = new FileInputStream(filePath);
-        // 创建一个长度为10240的Buffer
-        byte[] bbuf = new byte[10240];
-        // 用于保存实际读取的字节数
-        int hasRead = 0;
-        while ((hasRead = fis.read(bbuf)) > 0) {
-            sb.append(new String(bbuf, 0, hasRead,"UTF-8"));
-        }
-        fis.close();
-        return sb.toString();
-    }
-
-    /**
      * *根据文件路径读取byte[] 数组
      */
     public static byte[] readFilePathAsBytes(String filePath) throws IOException {
@@ -500,4 +434,70 @@ public class FileUtil {
             }  
         }  
     }  
+    
+    
+    /** 
+     * *获取txt文件编码方式
+     *  
+     * @param file 
+     * @return
+     */ 
+    public static String getCharset(File file) throws IOException {
+        String charset = "GBK";
+        byte[] first3Bytes = new byte[3];
+        try {
+            boolean checked = false;
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            bis.mark(0);
+            int read = bis.read(first3Bytes, 0, 3);
+            if (read == -1) {
+                return charset; // 文件编码为 ANSI
+            } else if (first3Bytes[0] == (byte) 0xFF && first3Bytes[1] == (byte) 0xFE) {
+                charset = "UTF-16LE"; // 文件编码为 Unicode
+                checked = true;
+            } else if (first3Bytes[0] == (byte) 0xFE && first3Bytes[1] == (byte) 0xFF) {
+                charset = "UTF-16BE"; // 文件编码为 Unicode big endian
+                checked = true;
+            } else if (first3Bytes[0] == (byte) 0xEF && first3Bytes[1] == (byte) 0xBB
+                    && first3Bytes[2] == (byte) 0xBF) {
+                charset = "UTF-8"; // 文件编码为 UTF-8
+                checked = true;
+            }
+            bis.reset();
+            if (!checked) {
+                int loc = 0;
+                while ((read = bis.read()) != -1) {
+                    loc++;
+                    if (read >= 0xF0)
+                        break;
+                    if (0x80 <= read && read <= 0xBF) // 单独出现BF以下的，也算是GBK
+                        break;
+                    if (0xC0 <= read && read <= 0xDF) {
+                        read = bis.read();
+                        if (0x80 <= read && read <= 0xBF) // 双字节 (0xC0 - 0xDF)
+                            // (0x80
+                            // - 0xBF),也可能在GB编码内
+                            continue;
+                        else
+                            break;
+                    } else if (0xE0 <= read && read <= 0xEF) {// 也有可能出错，但是几率较小
+                        read = bis.read();
+                        if (0x80 <= read && read <= 0xBF) {
+                            read = bis.read();
+                            if (0x80 <= read && read <= 0xBF) {
+                                charset = "UTF-8";
+                                break;
+                            } else
+                                break;
+                        } else
+                            break;
+                    }
+                }
+            }
+            bis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return charset;
+    }
 }
