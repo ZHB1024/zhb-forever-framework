@@ -1,9 +1,14 @@
 package com.zhb.forever.framework.vo;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class KeyValueVO {
+public class KeyValueVO implements Comparable, Serializable {
 	
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2897384798977137141L;
     private String id;
 	private String key ;
 	private String value ;
@@ -40,6 +45,23 @@ public class KeyValueVO {
     }
     public void setCreateTime(Calendar createTime) {
         this.createTime = createTime;
+    }
+    @Override
+    public int compareTo(Object object) {
+        KeyValueVO o = (KeyValueVO) object;
+        return this.key.compareTo(o.getKey());
+    }
+    
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        KeyValueVO kvp = (KeyValueVO) obj;
+
+        String key1 = kvp.getKey();
+
+        return (this.key.equals(key1));
     }
 	
 }
