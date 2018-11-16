@@ -22,10 +22,12 @@ import org.apache.sanselan.common.byteSources.ByteSourceFile;
 import org.apache.sanselan.formats.jpeg.JpegImageParser;
 import org.apache.sanselan.formats.jpeg.segments.UnknownSegment;
 
+//使用apache提供的开源sanselan框架来进行色彩模型转换
 public class JpegReaderUtil {
 
-    public static final int COLOR_TYPE_RGB = 1;
-    public static final int COLOR_TYPE_CMYK = 2;
+    // 颜色模型
+    public static final int COLOR_TYPE_RGB = 1;// rgb
+    public static final int COLOR_TYPE_CMYK = 2;// cmyk
     public static final int COLOR_TYPE_YCCK = 3;
     private int colorType;
     private boolean hasAdobeMarker;
@@ -78,7 +80,7 @@ public class JpegReaderUtil {
             UnknownSegment app14Segment = (UnknownSegment) segments.get(0);
             byte[] data = app14Segment.bytes;
             if ((data.length >= 12) && (data[0] == 65) && (data[1] == 100) && (data[2] == 111) && (data[3] == 98)
-                && (data[4] == 101)) {
+                    && (data[4] == 101)) {
                 this.hasAdobeMarker = true;
                 int transform = app14Segment.bytes[11] & 0xFF;
                 if (transform == 2)
@@ -142,7 +144,7 @@ public class JpegReaderUtil {
     public static BufferedImage convertCmykToRgb(Raster cmykRaster, ICC_Profile cmykProfile) throws IOException {
         if (cmykProfile == null) {
             cmykProfile = ICC_Profile
-                .getInstance(JpegReaderUtil.class.getResourceAsStream("/PSO_Coated_v2_300_Matte_laminate_eci.icc"));
+                    .getInstance(JpegReaderUtil.class.getResourceAsStream("/PSO_Coated_v2_300_Matte_laminate_eci.icc"));
         }
 
         if (cmykProfile.getProfileClass() != 1) {

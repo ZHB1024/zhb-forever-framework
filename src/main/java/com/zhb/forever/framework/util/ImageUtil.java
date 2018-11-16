@@ -34,6 +34,8 @@ import org.apache.sanselan.ImageReadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.zhb.forever.framework.vo.ImageVO;
 import com.zhb.forever.framework.vo.WatermarkVO;
 
@@ -753,6 +755,22 @@ public class ImageUtil {
             return preFont;
         }
         return font;
+    }
+    
+    //支持jpg的颜色模型：rgb和cmyk，ImageIO.read接口不支持读取cmyk色彩模型的jpg
+    public static BufferedImage read(InputStream is, String formatName) throws IOException {
+        BufferedImage bufferedImage = null;
+        if (isJPEG(formatName)) {
+            JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(is);
+            bufferedImage = decoder.decodeAsBufferedImage();
+        } else {
+            bufferedImage = ImageIO.read(is);
+        }
+        return bufferedImage;
+    }
+
+    public static boolean isJPEG(String formatName) {
+        return ("jpg".equalsIgnoreCase(formatName)) || ("jpeg".equalsIgnoreCase(formatName));
     }
    
 }
