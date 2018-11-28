@@ -2,7 +2,6 @@ package com.zhb.forever.framework.proto.support;
 
 import java.lang.reflect.Method;
 
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.zhb.forever.framework.proto.ProtoResult;
 import com.zhb.forever.framework.util.StringUtil;
@@ -14,7 +13,7 @@ import com.zhb.forever.framework.util.StringUtil;
 
 public abstract class ProtoConverter<T> {
 
-    public Message converFromProto(String className,ProtoResult rs) throws Exception {
+    public static Message converFromProto(String className,ProtoResult rs) throws Exception {
         if (StringUtil.isBlank(className)) {
             return null;
         }
