@@ -730,5 +730,10 @@ public class StringUtil {
     public static void print(String result) {
         System.out.print(result);
     }
+    
+    // 替换字符串里最后出现的元素
+    public static String replaceLast( String text, String oldChar, String newChar ) {
+        return text.replaceFirst( "(?s)" + oldChar + "(?!.*?" + oldChar + ")", newChar );
+    }
 
 }
