@@ -16,7 +16,29 @@ public class GenerateData {
             nums[i] = random.nextInt(number*100);
         }
         return nums;
-        
+    }
+    
+    public static Integer[] generateInteger(int number) {
+        Integer[] nums = new Integer[number];
+        Random random = new Random();
+        for(int i=0;i < number;i++) {
+            nums[i] = random.nextInt(number*100);
+        }
+        return nums;
+    }
+    
+    public static Integer[] generateIncreaseData(int number) {
+        Integer[] nums = new Integer[number];
+        for(int i=0;i < number;i++) {
+            nums[i] = number*i;
+        }
+        return nums;
+    }
+    
+    public static void swap(int[] values, int left, int right) {
+        int temp = values[left];
+        values[left] = values[right];
+        values[right] = temp;
     }
 
 }

@@ -12,6 +12,9 @@ import com.zhb.forever.framework.algorithm.base.GenerateData;
 /**
 *@author   zhanghb<a href="mailto:zhb20111503@126.com">zhanghb</a>
 *@createDate 2018年12月20日下午2:17:44
+*
+*并行 奇偶交换排序
+*
 */
 
 public class BubbleSort {
@@ -22,6 +25,7 @@ public class BubbleSort {
     private static int exchFlag = 1;
     
     public static void main(String[] args) {
+        System.out.println("并行 奇偶交换排序-----------");
         
         arr = GenerateData.generateData(100000);
         for (int i : arr) {

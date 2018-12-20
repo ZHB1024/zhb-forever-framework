@@ -1,15 +1,20 @@
-package com.zhb.forever.framework.algorithm;
+package com.zhb.forever.framework.algorithm.sort;
 
 import com.zhb.forever.framework.algorithm.base.GenerateData;
 
 /**
 *@author   zhanghb<a href="mailto:zhb20111503@126.com">zhanghb</a>
 *@createDate 2018年12月20日下午1:51:24
+*
+*冒泡排序
+*
 */
 
 public class BubbleSort {
 
     public static void main(String[] args) {
+        System.out.println("冒泡排序-----------");
+        
         int[] values = GenerateData.generateData(100000);
         for (int i : values) {
             //System.out.print(i + " ,");
