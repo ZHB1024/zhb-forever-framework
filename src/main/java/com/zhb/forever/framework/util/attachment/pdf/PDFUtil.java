@@ -13,15 +13,25 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfFileSpecification;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
+import com.lowagie.text.pdf.PdfWriter;
+import com.zhb.forever.framework.util.RandomUtil;
+
 import java.awt.Color;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
+
 import org.apache.log4j.Logger;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
+import org.xhtmlrenderer.pdf.PDFEncryption;
 
 
 public class PDFUtil {
@@ -218,6 +228,34 @@ public class PDFUtil {
         }
 
     }
+    
+    /**
+     * 直接把PDF输出到流，转写入web端
+     * 
+     * @param fonts
+     * @param pdfuri(是一个请求链接，请求controller 返回一个页面)
+     * @return
+     * @throws Exception
+     */
+    public static ByteArrayOutputStream generatePDFOutputStream(String[] fonts, String pdfuri) throws Exception {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ITextRenderer irt = new ITextRenderer();
+        irt.setPDFEncryption(getPdfEncryption());
+        ITextFontResolver r = irt.getFontResolver();
+        for (String font : fonts) {
+            r.addFont(font, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+        }
+        initHttpsConnection();
+        try {
+            irt.setDocument(pdfuri);
+            irt.layout();
+            irt.createPDF(bos);
+        } catch (Exception e) {
+            log.info("生成PDF出错。URL：" + pdfuri);
+            throw e;
+        }
+        return bos;
+    }
 
     public static String[] getDefaultFonts() {
         String base = PDFUtil.getBaseFontsPath();
@@ -238,6 +276,26 @@ public class PDFUtil {
 
     public static String getBaseFontsPath() {
         return PDFUtil.class.getClassLoader().getResource("fonts/").getPath();
+    }
+    
+    /**
+     * PDF加密设置
+     */
+    private static PDFEncryption getPdfEncryption() {
+        PDFEncryption pe = new PDFEncryption();
+        pe.setAllowedPrivileges(PdfWriter.ALLOW_PRINTING);
+        pe.setEncryptionType(PdfWriter.STANDARD_ENCRYPTION_128);
+        pe.setOwnerPassword(RandomUtil.getRandomUUID().getBytes());
+        return pe;
+    }
+    
+    public static void initHttpsConnection() {
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
     }
 
 }
