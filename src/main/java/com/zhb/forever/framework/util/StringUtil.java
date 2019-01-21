@@ -748,6 +748,7 @@ public class StringUtil {
     
     public static String generateFilterOrQuery(String field, Object[] strs) {
         String format = "%s:(%s)";
+        //return String.format(format, new Object[] { field, StringUtils.join(strs, " OR ") });
         return String.format(format, new Object[] { field, join(strs, " OR ") });
     }
 
