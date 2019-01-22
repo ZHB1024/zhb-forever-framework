@@ -1,5 +1,9 @@
 package com.zhb.forever.framework.util.attachment.excel;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -9,6 +13,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellRangeAddress;
+
+import com.alibaba.excel.EasyExcelFactory;
 
 public class ExcelUtil {
 	
@@ -611,6 +617,20 @@ public class ExcelUtil {
 				break;
 		}
 		return defalutStyle;
+    }
+    
+    /**
+     * *读取批量上传excel中的内容，Alibaba 
+     * @param InputStream
+     */
+    public static void readEasyExcel(InputStream is) throws IOException{
+        List<Object> data = EasyExcelFactory.read(is, new com.alibaba.excel.metadata.Sheet(1,0));
+        is.close();
+        if (null != data) {
+            for (Object object : data) {
+                System.out.println(object.toString());
+            }
+        }
     }
 
 }
