@@ -7,18 +7,22 @@ package com.zhb.forever.framework.design.pattern;
 
 public class Singleton {
     
-    public static int test = 10;
+    private static int test = 10;
 
     private Singleton() {
         System.out.println("singleton is create ");
     }
     
     private static class SingletonHolder {
-        private static Singleton instance = new Singleton();
+        private static final Singleton INSTANCE = new Singleton();
     }
     
     public static Singleton getInstance() {
-        return SingletonHolder.instance;
+        return SingletonHolder.INSTANCE;
+    }
+    
+    public static int getTest() {
+        return test;
     }
 
 }
