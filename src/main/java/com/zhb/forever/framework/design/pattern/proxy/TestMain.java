@@ -6,16 +6,17 @@ package com.zhb.forever.framework.design.pattern.proxy;
 */
 
 public class TestMain {
-
-    
     public static void main(String[] args) {
+        //静态代理
+        Star realStar = new RealStar();
+        Star starProxy = new StarProxy(realStar);
+        starProxy.sing();
+                
         //jdk动态代理
         
         //CGLib代理
         
-        
     }
-
 }
 
 
