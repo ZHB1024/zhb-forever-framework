@@ -17,6 +17,7 @@ import java.lang.reflect.Proxy;
 
 public class JDKDynamicProxy implements InvocationHandler {
     
+    //目标对象
     private Object object;
 
     public JDKDynamicProxy(Object object) {
@@ -26,14 +27,14 @@ public class JDKDynamicProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         System.out.println("助理安排场地----");
-        Object ob = method.invoke(this.object, args);
-        System.out.println(ob.toString());
+        Object ob = method.invoke(this.object, args);//歌星唱歌
         System.out.println("演唱会结束，助理做后续工作----");
         return ob;
     }
     
     /**
-     * 获取被代理接口实例对象
+     * 获取代理对象
+     * 根据目标对象的接口 创建代理对象，所以代理对象也实现了目标对象的接口
      * @param <T>
      * @return
      */

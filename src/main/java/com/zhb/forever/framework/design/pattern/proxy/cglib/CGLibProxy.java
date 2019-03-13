@@ -38,9 +38,7 @@ public class CGLibProxy implements MethodInterceptor {
     @Override
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
         System.out.println("助理安排场地----");
-      //执行目标对象的方法
-        Object ob = method.invoke(this.object, args);
-        System.out.println(ob.toString());
+        Object ob = method.invoke(this.object, args);////歌星唱歌
         System.out.println("演唱会结束，助理做后续工作----");
         return ob;
     }

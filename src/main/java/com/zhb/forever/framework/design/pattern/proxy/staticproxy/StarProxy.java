@@ -1,4 +1,6 @@
-package com.zhb.forever.framework.design.pattern.proxy;
+package com.zhb.forever.framework.design.pattern.proxy.staticproxy;
+
+import com.zhb.forever.framework.design.pattern.proxy.Star;
 
 /**
 *@author   zhanghb<a href="mailto:zhb20111503@126.com">zhanghb</a>
@@ -15,9 +17,9 @@ public class StarProxy implements Star {
 
     @Override
     public void sing() {
-        System.out.println("准备演唱会的前期工作...");
+        System.out.println("助理安排场地----");
         realStar.sing();//歌星唱歌
-        System.out.println("演唱会结束，处理后续工作...");
+        System.out.println("演唱会结束，助理做后续工作----");
     }
 
 }
