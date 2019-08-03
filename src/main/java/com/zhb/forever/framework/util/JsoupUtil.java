@@ -7,6 +7,8 @@ import java.util.Properties;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 public class JsoupUtil {
@@ -23,7 +25,7 @@ private static Logger logger = LoggerFactory.getLogger(JsoupUtil.class);
                 fis = new FileInputStream(property);
                 Properties properties = new Properties();
                 properties.load(fis);
-                IMAGE_BASE_SAVE_PATH = properties.getProperty("sys.url.download.save.base.path");
+                IMAGE_BASE_SAVE_PATH = properties.getProperty("sys.spider.download.path");
             }catch(Exception e) {
                 IMAGE_BASE_SAVE_PATH = "E:\\jsoup-image";
                 e.printStackTrace();
@@ -57,6 +59,46 @@ private static Logger logger = LoggerFactory.getLogger(JsoupUtil.class);
             return null;
         }
         return document;
+    }
+    
+    //从document中获取class为classTarget的内容
+    public static Elements getElementsByDocumentClass(Document document,String classTarget) {
+        if (null == document || StringUtil.isBlank(classTarget)) {
+            return null;
+        }
+        return document.getElementsByClass(classTarget);
+    }
+    
+    //从document中获取id的内容
+    public static Element getElementsByDocumentId(Document document,String id) {
+        if (null == document || StringUtil.isBlank(id)) {
+            return null;
+        }
+        return document.getElementById(id);
+    }
+    
+    //从element中按标签获取内容
+    public static Elements getElementsBySelect(Element element,String select) {
+        if (null == element || StringUtil.isBlank(select)) {
+            return null;
+        }
+        return element.select(select);
+    }
+    
+    //从element中按标签获取内容
+    public static Elements getElementsByTag(Element element,String tag) {
+        if (null == element || StringUtil.isBlank(tag)) {
+            return null;
+        }
+        return element.getElementsByTag(tag);
+    }
+    
+    //从element中按标签获取内容
+    public static String getElementsByAttr(Element element,String attr) {
+        if (null == element || StringUtil.isBlank(attr)) {
+            return null;
+        }
+        return element.attr(attr);
     }
     
     public static String getUrl() {
