@@ -46,6 +46,12 @@ public class PropertyUtil {
     private static String tempUploadPath;
     private static String tempDownloadPath;
     
+    //ftp
+    private static String ftpServerIP;
+    private static Integer ftpServerPort;
+    private static String ftpUserName;
+    private static String ftpPassword;
+    
     static{
         String propertyPath = System.getenv("propertyPath");
         if (null == propertyPath) {
@@ -89,6 +95,11 @@ public class PropertyUtil {
                 
                 tempUploadPath = properties.getProperty("sys.temp.upload.path");
                 tempDownloadPath = properties.getProperty("sys.temp.download.path");
+                
+                ftpServerIP = properties.getProperty("sys.ftp.server.ip");
+                ftpServerPort = Integer.valueOf(properties.getProperty("sys.ftp.server.port"));
+                ftpUserName = properties.getProperty("sys.ftp.username");
+                ftpPassword = properties.getProperty("sys.ftp.password");
                 
             } catch (IOException e) {
             }
@@ -183,4 +194,20 @@ public class PropertyUtil {
         return tempDownloadPath;
     }
 
+    public static String getFtpServerIP() {
+        return ftpServerIP;
+    }
+
+    public static Integer getFtpServerPort() {
+        return ftpServerPort;
+    }
+
+    public static String getFtpUserName() {
+        return ftpUserName;
+    }
+
+    public static String getFtpPassword() {
+        return ftpPassword;
+    }
+    
 }
