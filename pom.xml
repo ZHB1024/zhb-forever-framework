@@ -17,7 +17,7 @@
     <commons-io.version>2.0.1</commons-io.version>
     <commons-net.version>3.1</commons-net.version>
     <slf4j.version>1.7.5</slf4j.version>
-    <poi.version>3.10.1</poi.version>
+    <poi.version>4.1.1</poi.version>
     <easyexcel.version>1.1.2-beat1</easyexcel.version>
     <spring.version>5.0.8.RELEASE</spring.version>
     <java.home>D:\java\jdk\jdk1.8</java.home>
